@@ -1,0 +1,46 @@
+==== Secondary Structure Definition by the program DSSP, CMBI version by M.L. Hekkelman/2010-10-21 ==== DATE=2014-05-26        .
+REFERENCE W. KABSCH AND C.SANDER, BIOPOLYMERS 22 (1983) 2577-2637                                                              .
+HEADER    VIRAL PROTEIN                           22-MAY-98   1BFW                                                             .
+COMPND    MOL_ID: 1; MOLECULE: VP1 PROTEIN; CHAIN: A; FRAGMENT: THE MAJOR IMMUNO                                               .
+SOURCE    MOL_ID: 1                                                                                                            .
+AUTHOR    M.C.PETIT,N.BENKIRANE,G.GUICHARD,A.PHAN CHAN DU,M.T.CUNG, J.P.BRIAND,S                                               .
+   18  1  0  0  0 TOTAL NUMBER OF RESIDUES, NUMBER OF CHAINS, NUMBER OF SS-BRIDGES(TOTAL,INTRACHAIN,INTERCHAIN)                .
+  2332.1   ACCESSIBLE SURFACE OF PROTEIN (ANGSTROM**2)                                                                         .
+    1  5.6   TOTAL NUMBER OF HYDROGEN BONDS OF TYPE O(I)-->H-N(J)  , SAME NUMBER PER 100 RESIDUES                              .
+    0  0.0   TOTAL NUMBER OF HYDROGEN BONDS IN     PARALLEL BRIDGES, SAME NUMBER PER 100 RESIDUES                              .
+    0  0.0   TOTAL NUMBER OF HYDROGEN BONDS IN ANTIPARALLEL BRIDGES, SAME NUMBER PER 100 RESIDUES                              .
+    0  0.0   TOTAL NUMBER OF HYDROGEN BONDS OF TYPE O(I)-->H-N(I-5), SAME NUMBER PER 100 RESIDUES                              .
+    0  0.0   TOTAL NUMBER OF HYDROGEN BONDS OF TYPE O(I)-->H-N(I-4), SAME NUMBER PER 100 RESIDUES                              .
+    0  0.0   TOTAL NUMBER OF HYDROGEN BONDS OF TYPE O(I)-->H-N(I-3), SAME NUMBER PER 100 RESIDUES                              .
+    0  0.0   TOTAL NUMBER OF HYDROGEN BONDS OF TYPE O(I)-->H-N(I-2), SAME NUMBER PER 100 RESIDUES                              .
+    0  0.0   TOTAL NUMBER OF HYDROGEN BONDS OF TYPE O(I)-->H-N(I-1), SAME NUMBER PER 100 RESIDUES                              .
+    0  0.0   TOTAL NUMBER OF HYDROGEN BONDS OF TYPE O(I)-->H-N(I+0), SAME NUMBER PER 100 RESIDUES                              .
+    0  0.0   TOTAL NUMBER OF HYDROGEN BONDS OF TYPE O(I)-->H-N(I+1), SAME NUMBER PER 100 RESIDUES                              .
+    1  5.6   TOTAL NUMBER OF HYDROGEN BONDS OF TYPE O(I)-->H-N(I+2), SAME NUMBER PER 100 RESIDUES                              .
+    0  0.0   TOTAL NUMBER OF HYDROGEN BONDS OF TYPE O(I)-->H-N(I+3), SAME NUMBER PER 100 RESIDUES                              .
+    0  0.0   TOTAL NUMBER OF HYDROGEN BONDS OF TYPE O(I)-->H-N(I+4), SAME NUMBER PER 100 RESIDUES                              .
+    0  0.0   TOTAL NUMBER OF HYDROGEN BONDS OF TYPE O(I)-->H-N(I+5), SAME NUMBER PER 100 RESIDUES                              .
+  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30     *** HISTOGRAMS OF ***           .
+  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0    RESIDUES PER ALPHA HELIX         .
+  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0    PARALLEL BRIDGES PER LADDER      .
+  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0    ANTIPARALLEL BRIDGES PER LADDER  .
+  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0    LADDERS PER SHEET                .
+  #  RESIDUE AA STRUCTURE BP1 BP2  ACC     N-H-->O    O-->H-N    N-H-->O    O-->H-N    TCO  KAPPA ALPHA  PHI   PSI    X-CA   Y-CA   Z-CA 
+    1  158 A X              0   0  205      0, 0.0     0, 0.0     0, 0.0     0, 0.0   0.000 360.0 360.0 360.0  72.9   -1.9   -1.2    1.5
+    2  157 A X        +     0   0  227      2,-0.0     0, 0.0     0, 0.0     0, 0.0   0.339 360.0  20.9 144.3  70.4   -3.3   -3.3   -1.3
+    3  156 A X  S    S-     0   0   81      0, 0.0     2,-0.3     0, 0.0     0, 0.0  -0.434  94.6-110.7 154.9 -69.4   -2.3   -2.3   -4.8
+    4  155 A X        +     0   0   90      2,-0.0    -2,-0.0     0, 0.0     0, 0.0  -0.903  43.7 160.3 140.0-166.5    0.9   -0.3   -4.8
+    5  154 A X        -     0   0  214     -2,-0.3     3,-0.1     3,-0.0     0, 0.0  -0.387  29.6-163.1 149.1 -61.9    2.0    3.3   -5.5
+    6  153 A X        +     0   0   76      1,-0.2     2,-0.8     2,-0.0     3,-0.3  -0.116  58.9  59.9  75.0-176.8    5.4    3.9   -3.8
+    7  152 A X  S    S-     0   0   95      1,-0.2    -1,-0.2     2,-0.0    -2,-0.0  -0.458  92.4-113.9  62.6-102.6    6.9    7.2   -3.1
+    8  151 A X  S    S+     0   0  114     -2,-0.8     2,-0.3    -3,-0.1    -1,-0.2   0.450  79.4  21.3 132.4  77.8    4.3    8.8   -0.9
+    9  150 A X  S    S-     0   0  118     -3,-0.3    -2,-0.0     1,-0.1    -3,-0.0  -0.897  91.1 -87.4 151.2-115.9    2.5   11.8   -2.2
+   10  149 A G        -     0   0   58     -2,-0.3     2,-0.3     1,-0.1    -1,-0.1   0.199  54.1-105.2-154.9 -69.9    2.1   12.8   -5.8
+   11  148 A X        -     0   0  133     -3,-0.1    -1,-0.1     1,-0.0     0, 0.0  -0.982  25.6-171.5 161.2-152.9    4.8   14.9   -7.4
+   12  147 A X        -     0   0  167     -2,-0.3     2,-0.3     1,-0.0    -1,-0.0  -0.328  32.9-129.3 165.5 -69.3    5.5   18.5   -8.5
+   13  146 A G        -     0   0   51      2,-0.0     2,-0.4     0, 0.0    -1,-0.0  -0.645  31.4-123.1 130.7 -74.9    8.7   18.9  -10.3
+   14  145 A X        -     0   0  230     -2,-0.3     2,-0.3     0, 0.0     0, 0.0  -0.996  19.6-154.7 139.3-130.7   10.7   21.7   -8.8
+   15  144 A X        -     0   0  146     -2,-0.4     2,-0.1     1,-0.0    -2,-0.0  -0.888  18.9-116.5 158.5-122.2   12.1   24.8  -10.4
+   16  143 A G        -     0   0   65     -2,-0.3     2,-0.2     1,-0.1    -1,-0.0  -0.340  19.5-131.1-170.9-100.5   15.0   27.0   -9.4
+   17  142 A X              0   0  129      1,-0.4    -1,-0.1    -2,-0.1     0, 0.0  -0.660 360.0 360.0 164.0 -99.9   15.0   30.6   -8.3
+   18  141 A G              0   0  133     -2,-0.2    -1,-0.4     0, 0.0     0, 0.0   0.541 360.0 360.0-107.6 360.0   17.3   33.3   -9.8
