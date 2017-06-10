@@ -9,12 +9,10 @@ ALPHA_CUT = 100
 ## BETA_CUT is cutoff value of Sheet
 BETA_CUT = 100
 
-##aaData contains Chou Fasman structures of each aminoacid in protein
-aaData = []
+##dataDict contains a Chou Fasman probabilities of amino acid occurences in secondary structures.
+# For more infomration in proteinData description or in publication
 
-##dataDict contains a Chou Fasman propabilities of amino acid occurences in secondary structures. For more infomration in proteinData description or in publication
-
-dataDict = {'A' : [142,139, 83, 79, 66, 0.060,0.076,0.035,0.058,    'H','H','i','i',0,0,0],
+dataDictFromPub = {'A' : [142,139, 83, 79, 66, 0.060,0.076,0.035,0.058,    'H','H','i','i',0,0,0],
             'R' : [98,100, 93, 94, 95,  0.070,0.106,0.099,0.085,    'i','h','i','i',0,0,0],
             'N' : [67, 78, 89, 66,156,  0.161,0.083,0.191,0.091,    'b','i','i','b',0,0,0],
             'D' : [101,106, 54, 66,146, 0.147,0.110,0.179,0.081,    'I','h','B','b',0,0,0],
@@ -38,15 +36,15 @@ dataDict = {'A' : [142,139, 83, 79, 66, 0.060,0.076,0.035,0.058,    'H','H','i',
 
 class proteinData():
     """
-    A Chou Fasman data structure conected to dataDict.
+    A Chou Fasman data structure connected to dataDict.
     """
     ## code: (char) IUPAC amino acid code
     code = 0
-    ## p_alpha: (float) Propability of helix for amino acid (dataDict[code][0])
+    ## p_alpha: (float) Probability of helix for amino acid (dataDict[code][0])
     p_alpha = 0
-    ## p_beta:(float) Propability of sheet for amino acid (dataDict[code][2])
+    ## p_beta:(float) Probability of sheet for amino acid (dataDict[code][2])
     p_beta = 0
-    ## p_turn: (float) Propability of turn for amino acid (dataDict[code][4])
+    ## p_turn: (float) Probability of turn for amino acid (dataDict[code][4])
     p_turn = 0
     ## p_turn: (float) Statistical list of params (dataDict[code][5:8])
     bend = []
@@ -54,11 +52,11 @@ class proteinData():
     alpha_class = 0
     ## beta_class: (char) Other param from Chou-Fasman publication
     beta_class = 0
-    ## p4_alpha: (float) propability of helix for four aminoacids
+    ## p4_alpha: (float) Probability of helix for four aminoacids
     p4_alpha = 0
-    ## p4_beta: (float) propability of sheet for four aminoacids
+    ## p4_beta: (float) Probability of sheet for four aminoacids
     p4_beta = 0
-    ## p4_turn: (float) propability of turn for four aminoacids
+    ## p4_turn: (float) Probability of turn for four aminoacids
     p4_turn = 0
     ## turn_prod: (float) turn cutoff value
     turn_prod = 0
@@ -71,164 +69,179 @@ class proteinData():
 
     def __init__(self, char):
         self.code = char
+        self.dataDict = dataDictFromPub
+        ##self.aaData contains Chou Fasman structures of each aminoacid in protein
+        self.aaData = []
 
     def __getitem__(self, key):
         return key
 
-def main(seqq):
-    """
-    The main function creates a list of Chou Fasman data structures.
-    :param seqq: input sequence
-    """
-    for aa in seqq:
-        aU = aa.upper()
-        aaData.append(proteinData(aU))
-
-def print_it():
-    """
-    The print_it function prints the Chou Fasman data structure.
-    """
-    for i in range(0, len(aaData)):
-        print i, aaData[i].code, aaData[i].p_alpha, aaData[i].p_beta, aaData[i].p_turn,\
-              aaData[i].alpha_class, aaData[i].beta_class,\
-              aaData[i].p4_alpha, aaData[i].p4_beta, aaData[i].p4_turn, aaData[i].turn_prod, aaData[i].helix_nucl, aaData[i].sheet_nucl, aaData[i].turn_prop
-
-def get_probability():
-    """
-    The get_probability function counts probabilities of secondary structure at amino acid position.
-    """
-    for aa in aaData:
-        aa.p_alpha = dataDict[aa.code][0]
-        aa.p_beta = dataDict[aa.code][2]
-        aa.p_turn = dataDict[aa.code][4]
-        aa.bend = [dataDict[aa.code][5], dataDict[aa.code][6], dataDict[aa.code][7], dataDict[aa.code][8]]
-        aa.alpha_class = dataDict[aa.code][9]
-        aa.beta_class = dataDict[aa.code][10]
-
-def tetra_ave(seqq):
-    """
-    The tetra_ave function counts probabilities of secondary structure at four aminoacids positions.
-    :param seqq: input sequence
-    """
-    for i in range (1, len(seqq)- 3):
-        asum = bsum = tsum = 0
-        tprod = 1.0
-        for j in range(4):
-            asum += aaData[i+j].p_alpha
-            bsum += aaData[i+j].p_beta
-            tsum += aaData[i+j].p_turn
-            tprod *= float(aaData[i+j].bend[j])
-        aaData[i].p4_alpha = asum/4
-        aaData[i].p4_beta = bsum/4
-        aaData[i].p4_turn = tsum/4
-        aaData[i].turn_prod = tprod
-
-
-def propagation():
-    """
-    The propagation function compares probabilities of secondary structure variants and complements
-    Chou Fasman data structure by secondary structure candidates.
-    """
-    #Helix
-    helix_iterator = 0
-    for i in range(len(aaData)-3):
-        if aaData[i].p4_alpha >= 100 and aaData[i+1].p4_alpha >= 100 and aaData[i+2].p4_alpha >= 100 and aaData[i+3].p4_alpha >= 100:
-            aaData[i].helix_nucl = True
-            aaData[i+1].helix_nucl = True
-            aaData[i+2].helix_nucl = True
-            aaData[i+3].helix_nucl = True
-            i+4
-            helix_iterator += 4
-            if aaData[i].p4_alpha >= 100 and aaData[i].code != 'P' and aaData[i-1].helix_nucl == True and (aaData[i].alpha_class == 'H' or  aaData[i].alpha_class == 'h'):
-                aaData[i].helix_nucl = True
-                helix_iterator += 1
-            elif aaData[i].p4_alpha >= 103 and aaData[i].code != 'P' and aaData[i-1].helix_nucl == True and aaData[i].alpha_class == 'i' and (helix_iterator + 1) % 4 == 0:
-                aaData[i].helix_nucl = True
-                helix_iterator += 1
-
-            elif aaData[i].code == 'P':
-                helix_iterator == 0
-                i+1
-            else:
-                helix_iterator == 0
-    beta_iterator = 0
-
-    #Sheet
-    for i in range(len(aaData)-3):
-        if aaData[i].p4_beta >= 100 and aaData[i+1].p4_beta >= 100 and aaData[i+2].p4_alpha >= 100:
-            aaData[i].sheet_nucl = True
-            aaData[i+1].sheet_nucl = True
-            aaData[i+2].sheet_nucl = True
-            i+3
-            beta_iterator += 3
-            if aaData[i].p4_beta >= 100 and (aaData[i].beta_class == 'H' or  aaData[i].beta_class == 'h'):
-                aaData[i].sheet_nucl = True
-                beta_iterator += 1
-                i += 1
-            elif aaData[i].p4_beta >= 100 and aaData[i].beta_class == 'i':
-                p4_beta_SUM = 0
-                for j in range(i - beta_iterator, i):
-                    p4_beta_SUM += aaData[j].p4_beta
-
-                if p4_beta_SUM / len(range(i - beta_iterator, i)) >= 103:
-                    aaData[i].sheet_nucl = True
+    def main(self, seqq):
+        """
+        The main function creates a list of Chou Fasman data structures.
+        :param seqq: input sequence
+        """
+        for aa in seqq:
+            aU = aa.upper()
+            self.aaData.append(proteinData(aU))
+    
+    def print_it(self):
+        """
+        The print_it function prints the Chou Fasman data structure.
+        """
+        for i in range(0, len(self.aaData)):
+            print i, self.aaData[i].code, self.aaData[i].p_alpha, self.aaData[i].p_beta, self.aaData[i].p_turn,\
+                  self.aaData[i].alpha_class, self.aaData[i].beta_class,\
+                  self.aaData[i].p4_alpha, self.aaData[i].p4_beta, self.aaData[i].p4_turn, self.aaData[i].turn_prod,\
+                self.aaData[i].helix_nucl, self.aaData[i].sheet_nucl, self.aaData[i].turn_prop
+    
+    def get_probability(self):
+        """
+        The get_probability function counts probabilities of secondary structure at amino acid position.
+        """
+        for aa in self.aaData:
+            aa.p_alpha = self.dataDict[aa.code][0]
+            aa.p_beta = self.dataDict[aa.code][2]
+            aa.p_turn = self.dataDict[aa.code][4]
+            aa.bend = [self.dataDict[aa.code][5], self.dataDict[aa.code][6], self.dataDict[aa.code][7],
+                       self.dataDict[aa.code][8]]
+            aa.alpha_class = self.dataDict[aa.code][9]
+            aa.beta_class = self.dataDict[aa.code][10]
+    
+    def tetra_ave(self, seqq):
+        """
+        The tetra_ave function counts probabilities of secondary structure at four aminoacids positions.
+        :param seqq: input sequence
+        """
+        for i in range (1, len(seqq)- 3):
+            asum = bsum = tsum = 0
+            tprod = 1.0
+            for j in range(4):
+                asum += self.aaData[i+j].p_alpha
+                bsum += self.aaData[i+j].p_beta
+                tsum += self.aaData[i+j].p_turn
+                tprod *= float(self.aaData[i+j].bend[j])
+            self.aaData[i].p4_alpha = asum/4
+            self.aaData[i].p4_beta = bsum/4
+            self.aaData[i].p4_turn = tsum/4
+            self.aaData[i].turn_prod = tprod
+    
+    
+    def propagation(self):
+        """
+        The propagation function compares probabilities of secondary structure variants and complements
+        Chou Fasman data structure by secondary structure candidates.
+        """
+        #Helix
+        helix_iterator = 0
+        for i in range(len(self.aaData)-3):
+            if self.aaData[i].p4_alpha >= 100 and self.aaData[i+1].p4_alpha >= 100 and self.aaData[i+2].p4_alpha >= 100 \
+                    and self.aaData[i+3].p4_alpha >= 100:
+                self.aaData[i].helix_nucl = True
+                self.aaData[i+1].helix_nucl = True
+                self.aaData[i+2].helix_nucl = True
+                self.aaData[i+3].helix_nucl = True
+                i += 4
+                helix_iterator += 4
+                if self.aaData[i].p4_alpha >= 100 and self.aaData[i].code != 'P' \
+                        and (self.aaData[i].alpha_class == 'H' or  self.aaData[i].alpha_class == 'h'):
+                    self.aaData[i].helix_nucl = True
+                    helix_iterator += 1
+                elif self.aaData[i].p4_alpha >= 103 and self.aaData[i].code != 'P' and self.aaData[i-1].helix_nucl == True \
+                        and self.aaData[i].alpha_class == 'i' and (helix_iterator + 1) % 4 == 0:
+                    self.aaData[i].helix_nucl = True
+                    helix_iterator += 1
+    
+                elif self.aaData[i].code == 'P':
+                    helix_iterator == 0
+                    i += 1
+                else:
+                    helix_iterator == 0
+        beta_iterator = 0
+    
+        #Sheet
+        for i in range(len(self.aaData)-3):
+            if self.aaData[i].p4_beta >= 100 and self.aaData[i+1].p4_beta >= 100 and self.aaData[i+2].p4_alpha >= 100:
+                self.aaData[i].sheet_nucl = True
+                self.aaData[i+1].sheet_nucl = True
+                self.aaData[i+2].sheet_nucl = True
+                i += 3
+                beta_iterator += 3
+                if self.aaData[i].p4_beta >= 100 and (self.aaData[i].beta_class == 'H'
+                                                      or  self.aaData[i].beta_class == 'h'):
+                    self.aaData[i].sheet_nucl = True
                     beta_iterator += 1
                     i += 1
-            else:
-                beta_iterator == 0
-    #Turns
-    for i in range(len(aaData)-3):
-        if aaData[i].p4_turn > 100 and aaData[i].p4_turn > aaData[i].p4_alpha and aaData[i].p4_turn > aaData[i].p4_beta and aaData[i].turn_prod > TURN_PRODUCT:
-            aaData[i].turn_prop = True
-
-def secondary_structure(seqq):
-    """
-    The secondary_structure function assigns secondary structure symbol (E, H, T, C)->(Sheet, Helix, Turn, Random) for each aminoacid.
-    :param seqq: input aminoacidic sequence
-    :return: secondary structure sequence
-    """
-    secondary = ['C']*len(seqq)
-    for i in range(len(seqq)-3):
-        if aaData[i].helix_nucl == True and aaData[i].sheet_nucl == False and aaData[i].turn_prop == False:
-            secondary[i] = 'H'
-        elif aaData[i].helix_nucl == False and aaData[i].sheet_nucl == True and aaData[i].turn_prop == False:
-            secondary[i] = 'E'
-        elif aaData[i].helix_nucl == False and aaData[i].sheet_nucl == False and aaData[i].turn_prop == True:
-            secondary[i] = 'T'
-        elif aaData[i].helix_nucl == True and aaData[i].sheet_nucl == True and aaData[i].turn_prop == False:
-            if aaData[i].p4_alpha >=  aaData[i].p4_beta:   ## >= tu jest slaby element...
+                elif self.aaData[i].p4_beta >= 100 and self.aaData[i].beta_class == 'i':
+                    p4_beta_SUM = 0
+                    for j in range(i - beta_iterator, i):
+                        p4_beta_SUM += self.aaData[j].p4_beta
+    
+                    if p4_beta_SUM / len(range(i - beta_iterator, i)) >= 103:
+                        self.aaData[i].sheet_nucl = True
+                        beta_iterator += 1
+                        i += 1
+                else:
+                    beta_iterator == 0
+        #Turns
+        for i in range(len(self.aaData)-3):
+            if self.aaData[i].p4_turn > 100 and self.aaData[i].p4_turn > self.aaData[i].p4_alpha \
+                    and self.aaData[i].p4_turn > self.aaData[i].p4_beta and self.aaData[i].turn_prod > TURN_PRODUCT:
+                self.aaData[i].turn_prop = True
+    
+    def secondary_structure(self, seqq):
+        """
+        The secondary_structure function assigns secondary structure
+        symbol (E, H, T, C)->(Sheet, Helix, Turn, Random) for each aminoacid.
+        :param seqq: input aminoacidic sequence
+        :return: secondary structure sequence
+        """
+        secondary = ['C']*len(seqq)
+        for i in range(len(seqq)-3):
+            if self.aaData[i].helix_nucl == True and self.aaData[i].sheet_nucl == False \
+                    and self.aaData[i].turn_prop == False:
                 secondary[i] = 'H'
-            else:
+            elif self.aaData[i].helix_nucl == False and self.aaData[i].sheet_nucl == True \
+                    and self.aaData[i].turn_prop == False:
                 secondary[i] = 'E'
-
-    # secondary_structure cleaning
-    for i in range(len(secondary) - 2):
-        if secondary[i-1] == secondary[i+1] and secondary[i] != secondary[i-1]:
-            secondary[i] = secondary[i-1]
-        elif secondary[i] != secondary [i - 1] and secondary[i] != secondary[i + 1]:
-            if secondary[i - 1] == 'C' and secondary[i + 1] in ('T', 'E'):
-                secondary[i] = secondary[i + 1]
-            elif secondary[i + 1] == 'C' and secondary[i - 1] in ('T', 'E'):
-                secondary[i] = secondary[i - 1]
-    # short helices removing
-    sec = ''.join(secondary)
-    sec1 = re.sub('([^H])HH([^H])', r'\1\1\2\2', sec)
-    sec2 = re.sub('([^C])C([^C])', r'\1\1\2', sec1)
-    sec3 = re.sub('([^H])HHH([^H])', r'\1HHHH', sec2)
-    sec4 = list(re.sub('([^T])T([^T])', r'\1\1\2',sec3))
-    return ''.join(sec4)
-
-def engine(seqFasta):
-    """
-    This function execute Chou Fasman's algorithm
-    :param seqFasta: input sequence in fasta format
-    :return: predicted secondary structure (string)
-    """
-    main(seqFasta)
-    get_probability()
-    tetra_ave(seqFasta)
-    propagation()
-    return secondary_structure(seqFasta)
+            elif self.aaData[i].helix_nucl == False and self.aaData[i].sheet_nucl == False \
+                    and self.aaData[i].turn_prop == True:
+                secondary[i] = 'T'
+            elif self.aaData[i].helix_nucl == True and self.aaData[i].sheet_nucl == True \
+                    and self.aaData[i].turn_prop == False:
+                if self.aaData[i].p4_alpha >=  self.aaData[i].p4_beta:   ## >= tu jest slaby element...
+                    secondary[i] = 'H'
+                else:
+                    secondary[i] = 'E'
+    
+        # secondary_structure cleaning
+        for i in range(len(secondary) - 2):
+            if secondary[i-1] == secondary[i+1] and secondary[i] != secondary[i-1]:
+                secondary[i] = secondary[i-1]
+            elif secondary[i] != secondary [i - 1] and secondary[i] != secondary[i + 1]:
+                if secondary[i - 1] == 'C' and secondary[i + 1] in ('T', 'E'):
+                    secondary[i] = secondary[i + 1]
+                elif secondary[i + 1] == 'C' and secondary[i - 1] in ('T', 'E'):
+                    secondary[i] = secondary[i - 1]
+        # short helices removing
+        sec = ''.join(secondary)
+        sec1 = re.sub('([^H])HH([^H])', r'\1\1\2\2', sec)
+        sec2 = re.sub('([^C])C([^C])', r'\1\1\2', sec1)
+        sec3 = re.sub('([^H])HHH([^H])', r'\1HHHH', sec2)
+        sec4 = list(re.sub('([^T])T([^T])', r'\1\1\2',sec3))
+        return ''.join(sec4)
+    
+    def engine(self, seq_fasta):
+        """
+        This function execute Chou Fasman's algorithm
+        :param seq_fasta: input sequence in fasta format
+        :return: predicted secondary structure (string)
+        """
+        self.main(seq_fasta)
+        self.get_probability()
+        self.tetra_ave(seq_fasta)
+        self.propagation()
+        return self.secondary_structure(seq_fasta)
 
 # seq = "TKYHDLKNKVIVIAGGIKNLGALTAKTFALESVNLVLHYHQAKDSDTANKLKDELEDQGAKVALYQSDLSNEEEVAKLFDFAEKEFGKVDIAINTVGKVLKKPIVETSEAEFDAMDTINNKVAYFFIKQAAKHMNPNGHIITIATSLLAAYTGFYST"
 # engine(seq)
