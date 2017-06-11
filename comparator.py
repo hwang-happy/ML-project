@@ -35,7 +35,7 @@ def compare_structures(list_of_ss):
                 elem_stats.append(float(dict(elem)[key])/float(sum_of_elem))
         statistic.append(elem_stats)
 
-    print common
+    # print common
     out = []
     for seq in statistic:
         seq_score = []
@@ -104,8 +104,7 @@ def identities(two_seq):
 Test sequences
 """
 # list_of_ss = ['HHHHHHHHHHHHHHHHHHHHHHHHHEEEEEEEEEEEEEEEEHHHHCCCCCCCCCCCCTTTTTTTTTTTHHHHHHHHHHHHH',
-#               'HHHHHHHHHHHHHEEEEEEEEEEEEEEEEEEEEEEEEEEHHHHHHHHHHHHHHHHHHHCCCCCCCCCCCCTTTTTTTTTTT',
-#               'EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEHHHHHHHHHHHHHHHHHHCCCCCCCCCCCCTTTTTTTTTTTTT']
+#               'HHHHHHHHHHHHHEEEEEEEEEEEEEEEEEEEEEEEEEEHHHHHHHHHHHHHHHHHHHCCCCCCCCCCCCTTTTTTTTTTT']
 #
 # print compare_structures(list_of_ss=list_of_ss)
 # print HMM_consensus(list_of_ss)

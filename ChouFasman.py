@@ -69,12 +69,15 @@ class proteinData():
 
     def __init__(self, char):
         self.code = char
-        self.dataDict = dataDictFromPub
-        ##self.aaData contains Chou Fasman structures of each aminoacid in protein
-        self.aaData = []
 
     def __getitem__(self, key):
         return key
+
+class ChouFasman():
+    def __init__(self):
+        self.dataDict = dataDictFromPub
+        ##self.aaData contains Chou Fasman structures of each aminoacid in protein
+        self.aaData = []
 
     def main(self, seqq):
         """
@@ -84,7 +87,7 @@ class proteinData():
         for aa in seqq:
             aU = aa.upper()
             self.aaData.append(proteinData(aU))
-    
+
     def print_it(self):
         """
         The print_it function prints the Chou Fasman data structure.
@@ -94,7 +97,7 @@ class proteinData():
                   self.aaData[i].alpha_class, self.aaData[i].beta_class,\
                   self.aaData[i].p4_alpha, self.aaData[i].p4_beta, self.aaData[i].p4_turn, self.aaData[i].turn_prod,\
                 self.aaData[i].helix_nucl, self.aaData[i].sheet_nucl, self.aaData[i].turn_prop
-    
+
     def get_probability(self):
         """
         The get_probability function counts probabilities of secondary structure at amino acid position.
@@ -107,7 +110,7 @@ class proteinData():
                        self.dataDict[aa.code][8]]
             aa.alpha_class = self.dataDict[aa.code][9]
             aa.beta_class = self.dataDict[aa.code][10]
-    
+
     def tetra_ave(self, seqq):
         """
         The tetra_ave function counts probabilities of secondary structure at four aminoacids positions.
@@ -125,8 +128,8 @@ class proteinData():
             self.aaData[i].p4_beta = bsum/4
             self.aaData[i].p4_turn = tsum/4
             self.aaData[i].turn_prod = tprod
-    
-    
+
+
     def propagation(self):
         """
         The propagation function compares probabilities of secondary structure variants and complements
@@ -151,14 +154,14 @@ class proteinData():
                         and self.aaData[i].alpha_class == 'i' and (helix_iterator + 1) % 4 == 0:
                     self.aaData[i].helix_nucl = True
                     helix_iterator += 1
-    
+
                 elif self.aaData[i].code == 'P':
                     helix_iterator == 0
                     i += 1
                 else:
                     helix_iterator == 0
         beta_iterator = 0
-    
+
         #Sheet
         for i in range(len(self.aaData)-3):
             if self.aaData[i].p4_beta >= 100 and self.aaData[i+1].p4_beta >= 100 and self.aaData[i+2].p4_alpha >= 100:
@@ -176,7 +179,7 @@ class proteinData():
                     p4_beta_SUM = 0
                     for j in range(i - beta_iterator, i):
                         p4_beta_SUM += self.aaData[j].p4_beta
-    
+
                     if p4_beta_SUM / len(range(i - beta_iterator, i)) >= 103:
                         self.aaData[i].sheet_nucl = True
                         beta_iterator += 1
@@ -188,7 +191,7 @@ class proteinData():
             if self.aaData[i].p4_turn > 100 and self.aaData[i].p4_turn > self.aaData[i].p4_alpha \
                     and self.aaData[i].p4_turn > self.aaData[i].p4_beta and self.aaData[i].turn_prod > TURN_PRODUCT:
                 self.aaData[i].turn_prop = True
-    
+
     def secondary_structure(self, seqq):
         """
         The secondary_structure function assigns secondary structure

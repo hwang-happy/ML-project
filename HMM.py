@@ -91,6 +91,7 @@ print "Bad proteins letters:", bad_letters_proteins_all
 print "Bad structures letters:", bad_letters_structures_all
 
 ##normalization of the pi vector - we want to have the probability instead of the exact number
+# pi vector is the path = sequence of states
 for k in pi:
     pi[k] /= float(len(structures))
 
