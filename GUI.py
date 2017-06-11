@@ -233,8 +233,6 @@ def appRUN():
         out_file.write("Aminoacids sequence \n" + seqInput_out)
     if CheckVar1.get() == 1 and CheckVar6.get() == 1:
         #exec HMM and write the sequences into the output file
-        # ss_viterbi_mapped = HMM.hmm_structure('viterbi', seqInput_out)
-        # ss_viterbi = HMM.mapping_num_to_letters(ss_viterbi_mapped)
         ss_forward = HMM.mapping_num_to_letters(HMM.hmm_structure('forward', seqInput_out))
         ss_backward = HMM.mapping_num_to_letters(HMM.hmm_structure('backward', seqInput_out))
         out_file.write("\n\n--- HMM Structure --- Forward algorithm ---\n" + ss_forward)

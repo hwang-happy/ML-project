@@ -21,5 +21,5 @@ def dssp_ss(fileName):
                 found = True
                 return line.split(' ')[2]
         if found == False:
-            raise ValueError('Could not find id %s' % fileName)
+            raise ValueError('Could not find id %s in DSSP database for comparison' % fileName)
 
