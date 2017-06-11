@@ -17,7 +17,7 @@ max = float('inf')
 i = 0
 
 ##path is the file for the training of the HMM
-path = "output5597.out"
+path = "output102361.out"
 with open(path) as f:
     for line in f:
         splited = line.strip().split(' ')
