@@ -159,7 +159,7 @@ m = HMMFromMatrices(sigma,DiscreteDistribution(sigma),A_hmm,B_hmm,pi_hmm)
 def hmm_structure(method, seqFasta):
     """
     This function returns the mapped predicted structure according to the chosen method
-    :param method: decodification method; it can be 'viterbi', 'forward' or 'backward'
+    :param method: decodification method; it can be 'forward' or 'backward'
     :return: predicted mapped structure sequence
     """
     seqFasta = [char for char in seqFasta]
