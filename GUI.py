@@ -158,37 +158,37 @@ C3 = Checkbutton(app, text = "Consensus", variable = CheckVar3,onvalue = 1, offv
 C4 = Checkbutton(app, text = "BiGRU", variable = CheckVar4,onvalue = 1, offvalue = 0, height=3, width = 15)
 C1.grid(row=3, column=0, sticky='N')
 C2.grid(row=3, column=1, sticky='N')
-C3.grid(row=3, column=2, sticky='N')
-C4.grid(row=3, column=3, sticky='N')
+C3.grid(row=4, column=0, sticky='N')
+C4.grid(row=4, column=1, sticky='N')
 
 
 labelText3 = StringVar()
 labelText3.set("Output options")
 label3 = Label(app, textvariable=labelText3)
 label3.configure(background="beige")
-label3.grid(row=4, column=0, sticky='WN', padx=10)
-CheckVar4 = IntVar()
+label3.grid(row=5, column=0, sticky='WN', padx=10)
 CheckVar5 = IntVar()
 CheckVar6 = IntVar()
 CheckVar7 = IntVar()
 CheckVar8 = IntVar()
 CheckVar9 = IntVar()
 CheckVar10 = IntVar()
-C4 = Checkbutton(app, text = "Aminoacids sequence", variable = CheckVar4, onvalue = 1, offvalue = 0, height=3, width = 20)
+CheckVar11 = IntVar()
 C5 = Checkbutton(app, text = "Chou-Fasman", variable = CheckVar5, onvalue = 1, offvalue = 0, height=3, width = 20)
 C6 = Checkbutton(app, text = "HMM Structure", variable = CheckVar6, onvalue = 1, offvalue = 0, height=3, width = 20)
 C7 = Checkbutton(app, text = "DSSP Structure", variable = CheckVar7, onvalue = 1, offvalue = 0, height=3, width = 20)
 C8 = Checkbutton(app, text = "Consensus Structure", variable = CheckVar8, onvalue = 1, offvalue = 0, height=3, width = 20)
 C9 = Checkbutton(app, text = "BiGRU Structure", variable = CheckVar9, onvalue = 1, offvalue = 0, height=3, width = 20)
 C10 = Checkbutton(app, text = "Scoring", variable = CheckVar10, onvalue = 1, offvalue = 0, height=3, width = 20)
+C11 = Checkbutton(app, text = "Aminoacids sequence", variable = CheckVar11, onvalue = 1, offvalue = 0, height=3, width = 20)
 
-C4.grid(column=0, row=5, sticky='W')
-C5.grid(column=0, row=6, sticky='W')
-C6.grid(column=0, row=7, sticky='W')
-C7.grid(column=1, row=5, sticky='W')
-C8.grid(column=1, row=6, sticky='W')
+C5.grid(column=0, row=7, sticky='W')
+C6.grid(column=1, row=8, sticky='W')
+C7.grid(column=1, row=6, sticky='W')
+C8.grid(column=1, row=7, sticky='W')
 C9.grid(column=0, row=8, sticky='W')
-C10.grid(column=1, row=7, sticky='W')
+C10.grid(column=0, row=6, sticky='W')
+C11.grid(column=2, row=6, sticky='W')
 
 C1.configure(background="beige", activebackground="lightgreen")
 C2.configure(background="beige", activebackground="lightgreen")
@@ -200,6 +200,8 @@ C7.configure(background="beige", activebackground="lightgreen")
 C8.configure(background="beige", activebackground="lightgreen")
 C9.configure(background="beige", activebackground="lightgreen")
 C10.configure(background="beige", activebackground="lightgreen")
+C11.configure(background="beige", activebackground="lightgreen")
+
 def appRUN():
     """
     this function starts when the user presses the "Run" button;
@@ -209,7 +211,7 @@ def appRUN():
 
     pdbID, seqInput = input.check_input(fastaCode)
     CF = ChouFasman()
-    GRU = GRUNetwork()
+    GRU = BiGRU.GRUNetwork()
     #ss_viterbi = ""
     ss_forward = ""
     ss_backward = ""
@@ -242,7 +244,7 @@ def appRUN():
         ss_dssp_out = ss_dssp
         seqInput_out = seqInput
     out_file = save_file()
-    if CheckVar4.get() == 1:
+    if CheckVar11.get() == 1:
         out_file.write("Aminoacids sequence \n" + seqInput_out)
     if CheckVar1.get() == 1 and CheckVar6.get() == 1:
         #exec HMM and write the sequences into the output file
@@ -274,7 +276,7 @@ def appRUN():
             out_file.write("\n\n--- Consensus structure ---\n" + consensus)
     if CheckVar7.get() == 1:
         out_file.write("\n\n--- DSSP Structure ---\n" + ss_dssp_out)
-    if CheckVar9.get() == 1:
+    if CheckVar9.get() == 1 and CheckVar4.get() == 1:
         ss_BiGRU = GRU.secondary_structure(seqInput_out)
         out_file.write("\n\n--- BiGRU structure ---\n" + ss_BiGRU)
     if CheckVar10.get() == 1:
@@ -286,21 +288,24 @@ def appRUN():
         score2 = comparator.identities([ss_backward, ss_dssp_out])
         score3 = comparator.identities([ss_chou, ss_dssp_out])
         score4 = comparator.identities([consensus, ss_dssp_out])
+        score5 = comparator.identities([ss_BiGRU, ss_dssp_out])
         score1 = str(score1)
         score2 = str(score2)
         score3 = str(score3)
         score4 = str(score4)
+        score5 = str(score5)
         out_file.write("\n\n\n******* IDENTITIES PERCENTAGE *******\n\n" + "HMM Forward to DSSP:\t" + score1 + \
                         "\nHMM Backward to DSSP:\t" + score2 + "\nChou-Fasman to DSSP:\t" + score3 + \
-                        "\nConsensus to DSSP:\t" + score4)
-        percentage = comparator.compare_structures([ss_chou, ss_backward, ss_forward, ss_dssp_out, consensus])
+                        "\nConsensus to DSSP:\t" + score4 + "\nBiGRU to DSSP:\t" + score5)
+        percentage = comparator.compare_structures([ss_chou, ss_backward, ss_forward, ss_dssp_out, consensus, ss_BiGRU])
         out_file.write("\n\n\n******* STRUCTURE TYPE PERCENTAGE *******\n\n" \
                        + '\t         H\t    E\t    T\t  C\n' \
                        + "Chou-Fasman: \t" + str(percentage[0])
                        + "\nHMM Backward:\t" + str(percentage[1])
                        + "\nHMM Forward: \t" + str(percentage[2])
                        + "\nDSSP:        \t" + str(percentage[3])
-                       + "\nConsensus:   \t" + str(percentage[4]))
+                       + "\nConsensus:   \t" + str(percentage[4])
+                       + "\nBiGRU:   \t" + str(percentage[5]))
 
 button2 = Button(app, text='Run', width=10, command=appRUN)
 button2.configure(background="lightgreen")
