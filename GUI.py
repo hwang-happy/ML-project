@@ -15,6 +15,8 @@ import comparator
 import DSSP_nasz
 
 
+import BiGRU
+
 app = Tk()
 app.title("Secondary Structure Prediction")
 app.geometry('800x650+200+200')
@@ -149,12 +151,16 @@ label2.grid(row=2, column=0, sticky='WN', padx=10)
 CheckVar1 = IntVar()
 CheckVar2 = IntVar()
 CheckVar3 = IntVar()
+CheckVar4 = IntVar()
 C1 = Checkbutton(app, text = "HMM", variable = CheckVar1,onvalue = 1, offvalue = 0, height=3, width = 15)
 C2 = Checkbutton(app, text = "Statistical", variable = CheckVar2,onvalue = 1, offvalue = 0, height=3, width = 15)
 C3 = Checkbutton(app, text = "Consensus", variable = CheckVar3,onvalue = 1, offvalue = 0, height=3, width = 15)
+C4 = Checkbutton(app, text = "BiGRU", variable = CheckVar4,onvalue = 1, offvalue = 0, height=3, width = 15)
 C1.grid(row=3, column=0, sticky='N')
 C2.grid(row=3, column=1, sticky='N')
 C3.grid(row=3, column=2, sticky='N')
+C4.grid(row=3, column=3, sticky='N')
+
 
 labelText3 = StringVar()
 labelText3.set("Output options")
@@ -167,18 +173,22 @@ CheckVar6 = IntVar()
 CheckVar7 = IntVar()
 CheckVar8 = IntVar()
 CheckVar9 = IntVar()
+CheckVar10 = IntVar()
 C4 = Checkbutton(app, text = "Aminoacids sequence", variable = CheckVar4, onvalue = 1, offvalue = 0, height=3, width = 20)
 C5 = Checkbutton(app, text = "Chou-Fasman", variable = CheckVar5, onvalue = 1, offvalue = 0, height=3, width = 20)
 C6 = Checkbutton(app, text = "HMM Structure", variable = CheckVar6, onvalue = 1, offvalue = 0, height=3, width = 20)
 C7 = Checkbutton(app, text = "DSSP Structure", variable = CheckVar7, onvalue = 1, offvalue = 0, height=3, width = 20)
 C8 = Checkbutton(app, text = "Consensus Structure", variable = CheckVar8, onvalue = 1, offvalue = 0, height=3, width = 20)
-C9 = Checkbutton(app, text = "Scoring", variable = CheckVar9, onvalue = 1, offvalue = 0, height=3, width = 20)
+C9 = Checkbutton(app, text = "BiGRU Structure", variable = CheckVar9, onvalue = 1, offvalue = 0, height=3, width = 20)
+C10 = Checkbutton(app, text = "Scoring", variable = CheckVar10, onvalue = 1, offvalue = 0, height=3, width = 20)
+
 C4.grid(column=0, row=5, sticky='W')
 C5.grid(column=0, row=6, sticky='W')
 C6.grid(column=0, row=7, sticky='W')
 C7.grid(column=1, row=5, sticky='W')
 C8.grid(column=1, row=6, sticky='W')
-C9.grid(column=1, row=7, sticky='W')
+C9.grid(column=0, row=8, sticky='W')
+C10.grid(column=1, row=7, sticky='W')
 
 C1.configure(background="beige", activebackground="lightgreen")
 C2.configure(background="beige", activebackground="lightgreen")
@@ -189,6 +199,7 @@ C6.configure(background="beige", activebackground="lightgreen")
 C7.configure(background="beige", activebackground="lightgreen")
 C8.configure(background="beige", activebackground="lightgreen")
 C9.configure(background="beige", activebackground="lightgreen")
+C10.configure(background="beige", activebackground="lightgreen")
 def appRUN():
     """
     this function starts when the user presses the "Run" button;
@@ -198,6 +209,7 @@ def appRUN():
 
     pdbID, seqInput = input.check_input(fastaCode)
     CF = ChouFasman()
+    GRU = GRUNetwork()
     #ss_viterbi = ""
     ss_forward = ""
     ss_backward = ""
@@ -208,6 +220,7 @@ def appRUN():
     ss_dssp_out = ""
     seqInput_out = ""
     diff = len(ss_dssp) - len(seqInput)
+    ss_BiGRU = ""
     # CHECKING LENGTH OF INPUT
     if diff > 0:
         for i in range(len(seqInput)):
@@ -262,6 +275,9 @@ def appRUN():
     if CheckVar7.get() == 1:
         out_file.write("\n\n--- DSSP Structure ---\n" + ss_dssp_out)
     if CheckVar9.get() == 1:
+        ss_BiGRU = GRU.secondary_structure(seqInput_out)
+        out_file.write("\n\n--- BiGRU structure ---\n" + ss_BiGRU)
+    if CheckVar10.get() == 1:
         ss_forward = HMM.mapping_num_to_letters(HMM.hmm_structure('forward', seqInput_out))
         ss_backward = HMM.mapping_num_to_letters(HMM.hmm_structure('backward', seqInput_out))
         ss_chou = ChouFasman.engine(CF, seq_fasta=seqInput_out)
