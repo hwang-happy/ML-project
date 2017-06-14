@@ -118,7 +118,7 @@ def precision(seq, dssp):
     :param dssp: original structure from dssp database
     :return: percentage of identities (float)
     """
-    return precision_score(list(dssp), list(seq), average='macro')
+    return precision_score(list(dssp), list(seq), average=None, labels=['H', 'E', 'T', 'C'])
 
 def recall(seq, dssp):
     """
@@ -127,7 +127,7 @@ def recall(seq, dssp):
     :param dssp:
     :return:
     """
-    return recall_score(list(dssp), list(seq), average='macro')
+    return recall_score(list(dssp), list(seq), average=None, labels=['H', 'E', 'T', 'C'])
 
 def accuracy(seq, dssp):
     """
@@ -138,10 +138,10 @@ def accuracy(seq, dssp):
     """
     return accuracy_score(list(dssp), list(seq))
 
-s1 = 'HHHHHHHHHHHHHHHHHHHHHHHHHEEEEEEEEEEEEEEEEHHHHCCCCCCCCCCCCTTTTTTTTTTTHHHHHHHHHHHHH'
-s2 = 'HHHHHHHHHHHHHEEEEEEEEEEEEEEEEEEEEEEEEEEHHHHHHHHHHHHHHHHHHHCCCCCCCCCCCCTTTTTTTTTTT'
-print precision(s1, s2)
-print accuracy(s1, s2)
-print recall(s1, s2)
+# s1 = 'HHHHHHHHHHHHHHHHHHHHHHHHHEEEEEEEEEEEEEEEEHHHHCCCCCCCCCCCCTTTTTTTTTTTHHHHHHHHHHHHH'
+# s2 = 'HHHHHHHHHHHHHEEEEEEEEEEEEEEEEEEEEEEEEEEHHHHHHHHHHHHHHHHHHHCCCCCCCCCCCCTTTTTTTTTTT'
+# print precision(s1, s2)
+# print accuracy(s1, s2)
+# print recall(s1, s2)
 
 # print list("dkajskjdka")

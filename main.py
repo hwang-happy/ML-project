@@ -12,6 +12,8 @@ scores_hmm_f_dssp_identities, scores_hmm_back_dssp_identities, scores_cf_dssp_id
 scores_consensus_dssp_identities, percentages = [], [], [], [], []
 
 accuracy_hmm_f, accuracy_hmm_b, accuracy_cf, accuracy_consensus = [], [], [], []
+recall_hmm_f, recall_hmm_b, recall_cf, recall_consensus = [], [], [], []
+precision_hmm_f, precision_hmm_b, precision_cf, precision_consensus = [], [], [], []
 
 ## alphabet_structure: List containing SSP secondary structure symbols
 alphabet_structure = ['C', 'H', 'E', 'T']
@@ -21,7 +23,7 @@ alphabet_proteins = ['A','R','N','D', 'C', 'E', 'Q', 'G', 'H', 'I', 'L', 'K', 'M
 bad_1 = "B"
 bad_2 = "X"
 bad_3 = "J"
-max = 1000
+max = 10000
 
 def run():
     i = 0
@@ -81,6 +83,17 @@ def run():
         accuracy_hmm_b.append(comparator.accuracy(ss_backward, ss_dssp_out))
         accuracy_cf.append(comparator.accuracy(ss_chou, ss_dssp_out))
         accuracy_consensus.append(comparator.accuracy(consensus, ss_dssp_out))
+
+        recall_hmm_f.append(comparator.recall(ss_forward, ss_dssp_out))
+        recall_hmm_b.append(comparator.recall(ss_backward, ss_dssp_out))
+        recall_cf.append(comparator.recall(ss_chou, ss_dssp_out))
+        recall_consensus.append(comparator.recall(consensus, ss_dssp_out))
+
+        precision_hmm_f.append(comparator.precision(ss_forward, ss_dssp_out))
+        precision_hmm_b.append(comparator.precision(ss_backward, ss_dssp_out))
+        precision_cf.append(comparator.precision(ss_chou, ss_dssp_out))
+        precision_consensus.append(comparator.precision(consensus, ss_dssp_out))
+
 
 run()
 
@@ -143,8 +156,6 @@ def plot_methods_identities():
                 ha='center', va='bottom')
     plt.show()
 
-plot_methods_identities()
-
 def plot_precisions():
     plt.plot(accuracy_hmm_f)
     plt.plot(accuracy_hmm_b)
@@ -157,4 +168,34 @@ def plot_precisions():
     plt.xlim([0, 150])
     plt.show()
 
+
+plot_methods_identities()
 plot_precisions()
+
+def show_evaluation(method):
+    for i in range(len(method)):
+        mean_1 = np.mean(method[i][0])
+        mean_2 = np.mean(method[i][1])
+        mean_3 = np.mean(method[i][2])
+        mean_4 = np.mean(method[i][3])
+        return mean_1, mean_2, mean_3, mean_4
+
+H, E, T, C = show_evaluation(recall_hmm_f)
+print "HMM f", H, E, T, C
+H, E, T, C = show_evaluation(recall_hmm_b)
+print "HMM b", H, E, T, C
+H, E, T, C = show_evaluation(recall_cf)
+print "CF", H, E, T, C
+H, E, T, C = show_evaluation(recall_consensus)
+print "Consensus", H, E, T, C
+
+H, E, T, C = show_evaluation(precision_hmm_f)
+print "HMM f", H, E, T, C
+H, E, T, C = show_evaluation(precision_hmm_b)
+print "HMM b", H, E, T, C
+H, E, T, C = show_evaluation(precision_cf)
+print "CF", H, E, T, C
+H, E, T, C = show_evaluation(precision_consensus)
+print "Consensus", H, E, T, C
+
+print np.mean(accuracy_hmm_f), np.mean(accuracy_hmm_b), np.mean(accuracy_cf), np.mean(accuracy_consensus)
