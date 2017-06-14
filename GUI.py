@@ -290,7 +290,7 @@ def appRUN():
         score2 = str(score2)
         score3 = str(score3)
         score4 = str(score4)
-        out_file.write("\n\n\n******* SCORING *******\n\n" + "HMM Forward to DSSP:\t" + score1 + \
+        out_file.write("\n\n\n******* IDENTITIES PERCENTAGE *******\n\n" + "HMM Forward to DSSP:\t" + score1 + \
                         "\nHMM Backward to DSSP:\t" + score2 + "\nChou-Fasman to DSSP:\t" + score3 + \
                         "\nConsensus to DSSP:\t" + score4)
         percentage = comparator.compare_structures([ss_chou, ss_backward, ss_forward, ss_dssp_out, consensus])

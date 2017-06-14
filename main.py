@@ -8,7 +8,10 @@ import numpy as np
 # path = "output102361.out"
 path = "output49561.out"
 ids, sequences, structures, skipped = [], [], [], []
-scores_hmm_f_dssp, scores_hmm_back_dssp, scores_cf_dssp, scores_consensus_dssp, percentages = [], [], [], [], []
+scores_hmm_f_dssp_identities, scores_hmm_back_dssp_identities, scores_cf_dssp_identities, \
+scores_consensus_dssp_identities, percentages = [], [], [], [], []
+
+accuracy_hmm_f, accuracy_hmm_b, accuracy_cf, accuracy_consensus = [], [], [], []
 
 ## alphabet_structure: List containing SSP secondary structure symbols
 alphabet_structure = ['C', 'H', 'E', 'T']
@@ -18,7 +21,7 @@ alphabet_proteins = ['A','R','N','D', 'C', 'E', 'Q', 'G', 'H', 'I', 'L', 'K', 'M
 bad_1 = "B"
 bad_2 = "X"
 bad_3 = "J"
-max = 20000
+max = 1000
 
 def run():
     i = 0
@@ -41,10 +44,6 @@ def run():
         seqInput = sequences[i]
         #print i, pdbID
         CF = ChouFasman()
-        ss_forward = ""
-        ss_backward = ""
-        ss_chou = ""
-        consensus = ""
 
         ss_dssp = structures[i]
         ss_dssp_out = ""
@@ -71,11 +70,17 @@ def run():
         ss_backward = HMM.mapping_num_to_letters(HMM.hmm_structure('backward', seqInput_out))
         ss_chou = ChouFasman.engine(CF, seq_fasta=seqInput_out)
         consensus = comparator.HMM_consensus([ss_forward,ss_backward,ss_chou])
-        scores_hmm_f_dssp.append(comparator.identities([ss_forward, ss_dssp_out]))
-        scores_hmm_back_dssp.append(comparator.identities([ss_backward, ss_dssp_out]))
-        scores_cf_dssp.append(comparator.identities([ss_chou, ss_dssp_out]))
-        scores_consensus_dssp.append(comparator.identities([consensus, ss_dssp_out]))
+
+        scores_hmm_f_dssp_identities.append(comparator.identities([ss_forward, ss_dssp_out]))
+        scores_hmm_back_dssp_identities.append(comparator.identities([ss_backward, ss_dssp_out]))
+        scores_cf_dssp_identities.append(comparator.identities([ss_chou, ss_dssp_out]))
+        scores_consensus_dssp_identities.append(comparator.identities([consensus, ss_dssp_out]))
         percentages.append(comparator.compare_structures([ss_chou, ss_backward, ss_forward, ss_dssp_out, consensus]))
+
+        accuracy_hmm_f.append(comparator.accuracy(ss_forward, ss_dssp_out))
+        accuracy_hmm_b.append(comparator.accuracy(ss_backward, ss_dssp_out))
+        accuracy_cf.append(comparator.accuracy(ss_chou, ss_dssp_out))
+        accuracy_consensus.append(comparator.accuracy(consensus, ss_dssp_out))
 
 run()
 
@@ -116,9 +121,9 @@ run()
 # plt.show()
 
 
-def plot_methods_precisions():
-    y = [np.mean(scores_hmm_f_dssp), np.mean(scores_hmm_back_dssp),
-         np.mean(scores_cf_dssp), np.mean(scores_consensus_dssp)]
+def plot_methods_identities():
+    y = [np.mean(scores_hmm_f_dssp_identities), np.mean(scores_hmm_back_dssp_identities),
+         np.mean(scores_cf_dssp_identities), np.mean(scores_consensus_dssp_identities)]
     N = len(y)
 
     ind = np.arange(N)  # the x locations for the groups
@@ -129,13 +134,27 @@ def plot_methods_precisions():
 
     # add some text for labels, title and axes ticks
     ax.set_ylabel('Precision')
-    ax.set_title('Mean precision by method')
+    ax.set_title('Mean identity percentage by method')
     ax.set_xticks(ind + width / 2)
     ax.set_xticklabels(('HMM forward', 'HMM backward', 'Chou Fasman', 'Consensus'))
     for rect in rects1:
         height = rect.get_height()
-        ax.text(rect.get_x() + rect.get_width()/2., 1.01*height, np.around(height, 2),
+        ax.text(rect.get_x() + rect.get_width()/2., 1.02*height, np.around(height, 2),
                 ha='center', va='bottom')
     plt.show()
 
-plot_methods_precisions()
+plot_methods_identities()
+
+def plot_precisions():
+    plt.plot(accuracy_hmm_f)
+    plt.plot(accuracy_hmm_b)
+    plt.plot(accuracy_cf)
+    plt.plot(accuracy_consensus)
+    plt.title('Accuracy by method')
+    plt.ylabel('Accuracy')
+    plt.xlabel('')
+    plt.legend(['HMM forward', 'HMM backward', "Chou Fasman", "Consensus"], loc='best')
+    plt.xlim([0, 150])
+    plt.show()
+
+plot_precisions()
