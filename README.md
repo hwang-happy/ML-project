@@ -28,15 +28,16 @@ Aplikację uruchamia się przyciskiem `Run`.
 ## Opis zawartości repozytorium
 - **folder dssp** - folder z przykładowymi plikami z bazy DSSP
 - **folder fasta** - folder z przykładowymi plikami FASTA
-- **BiGRU.h5**
-- **BiGRU.py**
-- **BiGRU.yaml**
-- **BiGRU_Training.ipynb**
+- **BiGRU.h5** - plik z wagami dwukierunkowej sieci GRU
+- **BiGRU.py** - plik obsługujący uruchomienie dwukierunkowej sieci GRU dla podanej sekwencji aminokwasowej
+- **BiGRU.yaml** - plik zawierający strukturę dwukierunkowej sieci GRU
+- **BiGRU_Training.ipynb** - notebook trenujący dwukierunkową sieć GRU, zapisujący ją do plików BiGRU.h5 i BiGRU.yaml oraz dokonujący ostatecznej oceny modelu.
+- **BiGRU_hyper_parameter_opt.ipynb** - notebook dokonujący ewaluacji modelów sieci BiGRU pod względem dobranych hiperparametrów.
+- **Eval_stage_1_result.txt, Eval_stage_2_result.txt** - pliki tekstowe zawierające wyniki ewaluacji modelów sieci BiGRU pod względem dobranych hiperparametrów. Stopniowo aktualizowany (drugi, pierwszy kompletny).
 - **ChouFasman.py** - implementacja algorytmu Chou Fasmana
 - **DSSP_nasz.py** - sprawdzanie czy białko o podanym PDB ID znajduje się z naszej bazie danych
-- **Eval_stage_1_result.txt, Eval_stage_2_result.txt**
 - **GUI.py** - podstawowy plik projektu, służy do uruchomienia całej aplikacji i podania sekwencji wejściowej
-- **HMM.py** - plik obsługujący uruchomoenie Ukrytego Modelu Markowa dla podanej sekwencji aminokwasowej
+- **HMM.py** - plik obsługujący uruchomienie Ukrytego Modelu Markowa dla podanej sekwencji aminokwasowej
 - **HMM_training** - plik służący do trenowania Ukrytego Modelu Markowa
 - **comparator.py** - plik z funkcjami liczącymi różne statystyki i ewaluacje, głównie dla modeli statystycznych przedstawionych w projekcie
 - **main.py** - plik umożliwiający uzyskanie średniej skuteczności dla metod statystycznych
@@ -45,4 +46,5 @@ Aplikację uruchamia się przyciskiem `Run`.
 - **output1000.out, itp.** - pliki wynikowe wstępnego przetworzenia danych z DSSP przez `read_dssp_files.py`. W każdej linii zawarte są 3 informacje: PDB ID, sekwencja aminokwasowa oraz sekwencja ze strukturą drugorzędową
 - **read_dssp_files.py** - przetwarza pliki pobrane z bazy DSSP; wynikiem są pliki output.out opisane wyżej
 - **out.output** - przykładowy wynikowy plik dla białka z identyfikatorem 4JFC.
+
 
