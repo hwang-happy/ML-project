@@ -24,3 +24,25 @@ Zaznaczenie opcji `Scoring` powoduje wypisanie do wynikowego pliku dwóch rzeczy
 Przycisk `Reset` służy do wyczyszczenia okna wprowadzania.
 
 Aplikację uruchamia się przyciskiem `Run`.
+
+## Opis zawartości repozytorium
+- **folder dssp** - folder z przykładowymi plikami z bazy DSSP
+- **folder fasta** - folder z przykładowymi plikami FASTA
+- **BiGRU.h5**
+- **BiGRU.py**
+- **BiGRU.yaml**
+- **BiGRU_Training.ipynb**
+- **ChouFasman.py** - implementacja algorytmu Chou Fasmana
+- **DSSP_nasz.py** - sprawdzanie czy białko o podanym PDB ID znajduje się z naszej bazie danych
+- **Eval_stage_1_result.txt, Eval_stage_2_result.txt**
+- **GUI.py** - podstawowy plik projektu, służy do uruchomienia całej aplikacji i podania sekwencji wejściowej
+- **HMM.py** - plik obsługujący uruchomoenie Ukrytego Modelu Markowa dla podanej sekwencji aminokwasowej
+- **HMM_training** - plik służący do trenowania Ukrytego Modelu Markowa
+- **comparator.py** - plik z funkcjami liczącymi różne statystyki i ewaluacje, głównie dla modeli statystycznych przedstawionych w projekcie
+- **main.py** - plik umożliwiający uzyskanie średniej skuteczności dla metod statystycznych
+- **hmm.dssp.model** - plik zawierający prawdopodobieństwa przejśc między stanami w Ukrytym Modelu Markowa
+- **input.py** - plik zawiera funkcję walidującą podany na wejściu ciąg znaków pod względem poprawności formatu oraz upewnienia się, że jest to sekwencja białka 
+- **output1000.out, itp.** - pliki wynikowe wstępnego przetworzenia danych z DSSP przez `read_dssp_files.py`. W każdej linii zawarte są 3 informacje: PDB ID, sekwencja aminokwasowa oraz sekwencja ze strukturą drugorzędową
+- **read_dssp_files.py** - przetwarza pliki pobrane z bazy DSSP; wynikiem są pliki output.out opisane wyżej
+- **out.output** - przykładowy wynikowy plik dla białka z identyfikatorem 4JFC.
+
