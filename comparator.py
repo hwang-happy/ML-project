@@ -1,6 +1,7 @@
 from __future__ import division
 import collections
 import re
+from sklearn.metrics import precision_score, accuracy_score, recall_score
 
 ## alphabet_structure: List containing SSP secondary structure symbols
 alphabet_structure = ['C', 'H', 'E', 'T']
@@ -109,3 +110,38 @@ Test sequences
 # print compare_structures(list_of_ss=list_of_ss)
 # print HMM_consensus(list_of_ss)
 # print identities(list_of_ss)
+
+def precision(seq, dssp):
+    """
+    This function compares two seqences and checks the precision of the prediction for each structure
+    :param seq: predicted sequence
+    :param dssp: original structure from dssp database
+    :return: percentage of identities (float)
+    """
+    return precision_score(list(dssp), list(seq), average='macro')
+
+def recall(seq, dssp):
+    """
+    This function compares two seqences and checks the recall of the prediction for each structure
+    :param seq:
+    :param dssp:
+    :return:
+    """
+    return recall_score(list(dssp), list(seq), average='macro')
+
+def accuracy(seq, dssp):
+    """
+    This function compares two seqences and checks the accuracy of the prediction
+    :param seq:
+    :param dssp:
+    :return:
+    """
+    return accuracy_score(list(dssp), list(seq))
+
+s1 = 'HHHHHHHHHHHHHHHHHHHHHHHHHEEEEEEEEEEEEEEEEHHHHCCCCCCCCCCCCTTTTTTTTTTTHHHHHHHHHHHHH'
+s2 = 'HHHHHHHHHHHHHEEEEEEEEEEEEEEEEEEEEEEEEEEHHHHHHHHHHHHHHHHHHHCCCCCCCCCCCCTTTTTTTTTTT'
+print precision(s1, s2)
+print accuracy(s1, s2)
+print recall(s1, s2)
+
+# print list("dkajskjdka")
