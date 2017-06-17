@@ -23,7 +23,7 @@ config:
           class_name: VarianceScaling
           config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
         kernel_regularizer: null
-        name: gru_10
+        name: gru_1
         recurrent_activation: hard_sigmoid
         recurrent_constraint: null
         recurrent_dropout: 0.0
@@ -34,11 +34,11 @@ config:
         return_sequences: false
         stateful: false
         trainable: true
-        units: 128
+        units: 64
         unroll: false
         use_bias: true
     merge_mode: concat
-    name: bidirectional_10
+    name: bidirectional_1
     trainable: true
 - class_name: Dense
   config:
@@ -54,10 +54,10 @@ config:
       class_name: VarianceScaling
       config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
     kernel_regularizer: null
-    name: dense_6
+    name: dense_1
     trainable: true
     units: 5
     use_bias: true
 - class_name: Activation
-  config: {activation: softmax, name: activation_6, trainable: true}
+  config: {activation: softmax, name: activation_1, trainable: true}
 keras_version: 2.0.4
